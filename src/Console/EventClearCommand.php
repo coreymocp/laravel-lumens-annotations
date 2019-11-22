@@ -46,11 +46,14 @@ class EventClearCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // delete events.php file
         $this->generator->clean();
 
         $this->info('Events cleared successfully!');
     }
+
+
+
 }

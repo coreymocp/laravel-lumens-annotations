@@ -75,7 +75,7 @@ class RouteScanCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // get classes
         $classes = $this->finder->getClassesFromNamespace($this->config['routes_namespace']);

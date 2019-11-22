@@ -75,7 +75,7 @@ class EventScanCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // get classes
         $classes = $this->finder->getClassesFromNamespace($this->config['events_namespace']);

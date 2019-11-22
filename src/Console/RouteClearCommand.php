@@ -46,7 +46,7 @@ class RouteClearCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // delete routes.php file
         $this->generator->clean();
