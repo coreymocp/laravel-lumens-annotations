@@ -22,7 +22,9 @@ class RouteScanner
      */
     public function __construct(AnnotationReader $reader)
     {
-        $this->reader = $reader;
+        $this->reader = $reader; 
+        // OA namespace is for swagger annotations. We want to ignore those.
+        $this->reader->addGlobalIgnoredNamespace("OA");
     }
 
     /**
@@ -106,7 +108,6 @@ class RouteScanner
         
         // find routes
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-
             $name = $reflectionMethod->getName();
             $methodAnnotations = $this->reader->getMethodAnnotations($reflectionMethod);
 
@@ -177,7 +178,6 @@ class RouteScanner
               }
             }
         }
-
         return $controllerMetadata;
     }
 
