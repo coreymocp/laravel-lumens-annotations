@@ -88,7 +88,7 @@ class RouteScanner
             if ($annotation instanceof \ProAI\Annotations\Annotations\Controller) {
                 $prefix = $annotation->prefix;
                 $middleware = $annotation->middleware;
-                $classMiddlewares[] = $annotation->middleware;;
+                $classMiddlewares[] = $annotation->middleware;
             }
             if ($annotation instanceof \ProAI\Annotations\Annotations\Middleware) {
                 $middleware = $annotation->value;
