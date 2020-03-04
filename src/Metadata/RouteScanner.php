@@ -78,6 +78,9 @@ class RouteScanner
         $classAnnotations = $this->reader->getClassAnnotations($reflectionClass);
 
         $controllerMetadata = [];
+        $classMiddlewares = [];
+
+      
 
         // find entity parameters and plugins
         foreach ($classAnnotations as $annotation) {
@@ -85,9 +88,11 @@ class RouteScanner
             if ($annotation instanceof \ProAI\Annotations\Annotations\Controller) {
                 $prefix = $annotation->prefix;
                 $middleware = $annotation->middleware;
+                $classMiddlewares[] = $annotation->middleware;
             }
             if ($annotation instanceof \ProAI\Annotations\Annotations\Middleware) {
                 $middleware = $annotation->value;
+                $classMiddlewares[] = $annotation->value;
             }
 
             // resource controller
@@ -157,8 +162,15 @@ class RouteScanner
                 // add other method annotations
                 foreach ($methodAnnotations as $annotation) {
                   if ($annotation instanceof \ProAI\Annotations\Annotations\Middleware) {
+                   /**
                       if (!empty($middleware) && isset($routeMetadata['middleware'])) {
                           $routeMetadata['middleware'] = [$middleware, $annotation->value];
+                          continue;
+                      }
+                    */
+                     if (!empty($classMiddlewares) && isset($routeMetadata['middleware'])) {
+                          $classMiddlewares[] = $annotation->value;
+                          $routeMetadata['middleware'] = $classMiddlewares;
                           continue;
                       }
 
@@ -170,9 +182,17 @@ class RouteScanner
                   if (! empty($prefix)) {
                     $routeMetadata['uri'] = $prefix.'/'.$routeMetadata['uri'];
                   }
+                /**
                   if (! empty($middleware) && empty($routeMetadata['middleware'])) {
                     $routeMetadata['middleware'] = $middleware;
                   }
+                  */
+
+                  if (!empty($classMiddlewares) && isset($routeMetadata['middleware'])) {
+                          $routeMetadata['middleware'] = $classMiddlewares;
+                  }
+                  $routeMetadata['middleware'] = array_unique($routeMetadata['middleware']);
+                  $routeMetadata['middleware'] = array_filter($routeMetadata['middleware'],'strlen');
 
                   $controllerMetadata[$name.$idx] = $routeMetadata;
               }
